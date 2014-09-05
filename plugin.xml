@@ -1,4 +1,4 @@
-<plugin id="net.sourceforge.dita4publishers.json">
+<plugin id="org.dita4publishers.json">
     
 	<template file="build_transtype-json_template.xml"/>  
 	<template file="xsl/map2json_template.xsl"/>
