@@ -1,0 +1,9 @@
+<plugin id="net.sourceforge.dita4publishers.json">
+    
+	<template file="build_transtype-json_template.xml"/>  
+	<template file="xsl/map2json_template.xsl"/>
+
+	<feature extension="dita.conductor.transtype.check" value="json" type="txt"/>
+	<feature extension="dita.conductor.target.relative" value="build.xml" type="file"/>
+	
+</plugin>
