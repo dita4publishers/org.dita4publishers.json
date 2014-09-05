@@ -1,4 +1,7 @@
-net.sourceforge.dita4publishers.json
-====================================
+org.dita4publishers.json
+========================
 
-A plugin to generate json content using DITA
+
+A plugin to generate a json representation of DITA files. 
+This plugin will be used as a dependency of the html5 plugin.
+
