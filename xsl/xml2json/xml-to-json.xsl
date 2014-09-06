@@ -88,29 +88,6 @@
     <xsl:sequence select="$output"/>
   </xsl:function>
 
-  <!--
-    Template to match the root node so that the stylesheet can also
-    be used on the command line.
-  -->
-  <xsl:template match="/*">
-      <xsl:choose>
-        <xsl:when test="$debug">
-          <xsl:variable name="json-tree">
-            <json:object>
-              <xsl:copy-of select="if (not($use-rayfish)) then json:create-node(., false()) else json:create-simple-node(.)"/>
-            </json:object>
-          </xsl:variable>
-
-          <debug>
-            <xsl:copy-of select="$json-tree"/>
-          </debug>
-          <xsl:apply-templates select="$json-tree" mode="json"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="json:generate(.)"/>
-        </xsl:otherwise>
-      </xsl:choose>
-  </xsl:template>
 
   <!--
     All methods below are private methods and should not be used

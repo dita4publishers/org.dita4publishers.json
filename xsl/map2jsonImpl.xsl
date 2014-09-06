@@ -22,8 +22,32 @@
        consistent with and compatible with the license of the DITA Open Toolkit.
 
     ============================================================== -->
-  <xsl:import href="../../net.sourceforge.dita4publishers.html2/xsl/map2html2Impl.xsl"/>
-  <xsl:import href="xml2json/xml-to-json.xsl"/>
+  <!--xsl:import href="../../net.sourceforge.dita4publishers.html2/xsl/map2html2Impl.xsl"/-->
+  <xsl:import href="plugin:org.dita4publishers.common.xslt:xsl/reportParametersBase.xsl"/>
+  <xsl:import href="plugin:org.dita4publishers.common.html:xsl/html-generation-utils.xsl"/>
+  <xsl:import href="plugin:org.dita4publishers.common.mapdriven:/xsl/dataCollection.xsl"/>
+
+  <!-- Import the base HTML output generation transform. -->
+  <xsl:import href="plugin:org.dita.xhtml:xsl/dita2xhtml.xsl"/>
+
+  <xsl:import href="plugin:org.dita4publishers.common.xslt:xsl/graphicMap2AntCopyScript.xsl"/>
+  <xsl:import href="plugin:org.dita4publishers.common.xslt:xsl/map2graphicMap.xsl"/>
+  <xsl:import href="plugin:org.dita4publishers.common.xslt:xsl/topicHrefFixup.xsl"/>
+
+  <!-- FIXME: This URL syntax is local to me: I hacked catalog-dita_template.xml
+              to add this entry:
+
+              <rewriteURI uriStartString="plugin:base-xsl:" rewritePrefix="xsl/"></rewriteURI>
+
+        see https://github.com/dita-ot/dita-ot/issues/1405
+    -->
+  <xsl:import href="plugin:org.dita.base:xsl/common/dita-utilities.xsl"/>
+
+  <xsl:include href="plugin:org.dita4publishers.common.html:xsl/commonHtmlOverrides.xsl"/>
+  <xsl:include href="plugin:org.dita4publishers.common.html:xsl/commonHtmlEnumeration.xsl"/>
+  <xsl:include href="plugin:org.dita4publishers.common.html:xsl/commonHtmlBookmapEnumeration.xsl"/>
+ 
+  <xsl:include href="xml2json/xml-to-json.xsl"/>
   <xsl:include href="map2jsonContent.xsl"/>
   
   <xsl:param name="OUTEXT" select="'.json'" as="xs:string"/>
@@ -31,7 +55,33 @@
   <xsl:param name="outdir" select="''" />
   <xsl:param name="topicsOutputDir" select="''" />
   <xsl:param name="tempdir" select="''" />
+  <xsl:param name="generateGlossaryBoolean" select="false()"/>
+  <xsl:param name="generateIndexBoolean" select="false()"/>
+  <xsl:param name="imagesOutputDir" select="'images'" as="xs:string"/>
 
+  <xsl:param name="rawPlatformString" select="'unknown'" as="xs:string"/><!-- As provided by Ant -->
+
+  <xsl:variable name="platform" as="xs:string"
+    select="
+    if (starts-with($rawPlatformString, 'Win') or
+        starts-with($rawPlatformString, 'Win'))
+       then 'windows'
+       else 'nx'
+    "
+  />
+
+  <xsl:variable name="imagesOutputPath">
+    <xsl:choose>
+      <xsl:when test="$imagesOutputDir != ''">
+        <xsl:sequence select="concat($outdir,
+            if (ends-with($outdir, '/')) then '' else '/',
+            $imagesOutputDir)"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:sequence select="$outdir"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
 
   <xsl:output  name="json" indent="no" omit-xml-declaration="yes" method="text" encoding="utf-8"/>
   
