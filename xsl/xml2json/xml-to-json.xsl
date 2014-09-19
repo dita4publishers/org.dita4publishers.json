@@ -8,7 +8,7 @@
   <xsl:strip-space elements="*"/>
 
   <!--
-     XSLTJSON v0.91.
+     XSLTJSON v1.0.93.
 
      You can use these parameters to control the output by supplying them to
      stylesheet. Consult the manual of your XSLT processor for instructions
@@ -37,18 +37,18 @@
        Danny Cohn - Bug report and fix for invalid floating point number serialization.
 
      Copyright:
-      2006-2011, Bram Stein
+      2006-2014, Bram Stein
 
       Licensed under the new BSD License.
       All rights reserved.
   -->
-  <!--xsl:param name="debug" as="xs:boolean" select="false()"/-->
+  <xsl:param name="debug" as="xs:boolean" select="false()"/>
   <xsl:param name="use-rabbitfish" as="xs:boolean" select="false()"/>
   <xsl:param name="use-badgerfish" as="xs:boolean" select="false()"/>
   <xsl:param name="use-namespaces" as="xs:boolean" select="false()"/>
   <xsl:param name="use-rayfish" as="xs:boolean" select="false()"/>
   <xsl:param name="jsonp" as="xs:string" select="''"/>
-  <xsl:param name="skip-root" as="xs:boolean" select="true()"/>
+  <xsl:param name="skip-root" as="xs:boolean" select="false()"/>
 
   <!--
     If you import or include the stylesheet in your own stylesheet you
@@ -88,6 +88,29 @@
     <xsl:sequence select="$output"/>
   </xsl:function>
 
+  <!--
+    Template to match the root node so that the stylesheet can also
+    be used on the command line.
+  -->
+  <!--xsl:template match="/*">
+      <xsl:choose>
+        <xsl:when test="$debug">
+          <xsl:variable name="json-tree">
+            <json:object>
+              <xsl:copy-of select="if (not($use-rayfish)) then json:create-node(., false()) else json:create-simple-node(.)"/>
+            </json:object>
+          </xsl:variable>
+
+          <debug>
+            <xsl:copy-of select="$json-tree"/>
+          </debug>
+          <xsl:apply-templates select="$json-tree" mode="json"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="json:generate(.)"/>
+        </xsl:otherwise>
+      </xsl:choose>
+  </xsl:template-->
 
   <!--
     All methods below are private methods and should not be used
@@ -384,10 +407,10 @@
           <!--
               A value is considered a string if the following conditions are met:
                * There is whitespace/formatting around the value of the node.
-               * The value is not a valid JSON number (i.e. '01', '1.' are not valid JSON numbers.)
+               * The value is not a valid JSON number (i.e. '01', '+1', '1.', and '.5' are not valid JSON numbers.)
                * The value does not equal the any of the following strings: 'false', 'true', 'null'.
           -->
-          <xsl:when test="normalize-space(.) ne . or not((string(.) castable as xs:integer and not(starts-with(string(.),'0') and not(. = '0'))) or (string(.) castable as xs:decimal and not(starts-with(.,'-.')) and not(starts-with(.,'-0') and not(starts-with(.,'-0.'))) and not(ends-with(.,'.')) and not(starts-with(.,'0') and not(starts-with(.,'0.'))) )) and not(. = 'false') and not(. = 'true') and not(. = 'null')">
+          <xsl:when test="normalize-space(.) ne . or not((string(.) castable as xs:integer  and not(starts-with(string(.),'+')) and not(starts-with(string(.),'0') and not(. = '0'))) or (string(.) castable as xs:decimal  and not(starts-with(string(.),'+')) and not(starts-with(.,'-.')) and not(starts-with(.,'.')) and not(starts-with(.,'-0') and not(starts-with(.,'-0.'))) and not(ends-with(.,'.')) and not(starts-with(.,'0') and not(starts-with(.,'0.'))) )) and not(. = 'false') and not(. = 'true') and not(. = 'null')">
             <xsl:text/>"<xsl:value-of select="json:encode-string(.)"/>"<xsl:text/>
           </xsl:when>
           <xsl:otherwise>
