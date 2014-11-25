@@ -2,6 +2,9 @@
     
 	<template file="build_transtype-json_template.xml"/>  
 	<template file="xsl/map2json_template.xsl"/>
+  
+  <feature extension="package.support.name" value="Eliot Kimber"/>
+  <feature extension="package.support.email" value="ekimber@contrext.com"/>  
 
 	<extension-point id="d4p.json.xslt.param" name="JSON xslt parameters" />
 
