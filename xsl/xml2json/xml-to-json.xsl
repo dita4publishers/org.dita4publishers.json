@@ -5,7 +5,6 @@
   xmlns:json="http://json.org/">
 
   <xsl:output indent="no" omit-xml-declaration="yes" method="text" encoding="utf-8"/>
-  <xsl:strip-space elements="*"/>
 
   <!--
      XSLTJSON v1.0.93.

@@ -11,7 +11,6 @@
 	   All rights reserved.
 	-->
 	<xsl:output indent="no" omit-xml-declaration="yes" method="text" encoding="utf-8"/>
-	<xsl:strip-space elements="*"/>
 
 	<json:search name="string">
 		<json:replace src="\" dst="\\"/>
