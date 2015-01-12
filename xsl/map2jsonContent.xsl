@@ -47,7 +47,9 @@
   </xsl:template>
 
 
-  <xsl:template match="*[df:isTopicRef(.)]" mode="generate-json-content">
+  <xsl:template mode="generate-json-content"
+                match="*[df:isTopicRef(.)]
+                          [not(@scope = ('peer', 'external'))]">
     <xsl:param name="rootMapDocUrl" as="xs:string" tunnel="yes"/>
      <xsl:param name="collected-data" as="element()" tunnel="yes"/>
     <xsl:variable name="topic" select="df:resolveTopicRef(.)" as="element()*"/>
