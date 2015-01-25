@@ -4,7 +4,7 @@
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:json="http://json.org/">
 
-  <xsl:output indent="no" omit-xml-declaration="yes" method="text" encoding="utf-8"/>
+  <xsl:output name="json" indent="no" omit-xml-declaration="yes" method="text" encoding="utf-8"/>
 
   <!--
      XSLTJSON v1.0.93.
