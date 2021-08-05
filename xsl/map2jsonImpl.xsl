@@ -9,7 +9,7 @@
   xmlns:mapdriven="http://dita4publishers.org/mapdriven"
   exclude-result-prefixes="xs xd df relpath mapdriven index-terms java xsl mapdriven"
   xmlns:java="org.dita.dost.util.ImgUtils"
-  version="2.0">
+  version="3.0">
 
   <!-- =============================================================
 
